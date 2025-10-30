@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seu Espaço de Bem-Estar 💙</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 30px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    h1 {
+      color: #667eea;
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 2em;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 0.95em;
+    }
+
+    .emoji-header {
+      text-align: center;
+      font-size: 3em;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    button {
+      width: 100%;
+      padding: 18px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      color: white;
+      box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: white;
+      box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #fa709a, #fee140);
+      color: white;
+      box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);
+    }
+
+    .btn-back {
+      background: #e0e0e0;
+      color: #333;
+      padding: 12px;
+      margin-top: 20px;
+    }
+
+    .btn-back:hover {
+      background: #d0d0d0;
+      transform: translateY(-2px);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border-radius: 15px;
+      border: 2px solid #e0e0e0;
+      font-size: 15px;
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 20px;
+      resize: vertical;
+      min-height: 120px;
+      transition: border 0.3s;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .response-box {
+      background: linear-gradient(135deg, #667eea15, #764ba215);
+      padding: 25px;
+      border-radius: 20px;
+      margin: 20px 0;
+      border-left: 5px solid #667eea;
+      animation: slideIn 0.5s ease-out;
+      color: #333;
+      line-height: 1.8;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .loading {
+      text-align: center;
+      color: #667eea;
+      font-size: 1.2em;
+      padding: 30px;
+    }
+
+    .loading::after {
+      content: '...';
+      animation: dots 1.5s infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60%, 100% { content: '...'; }
+    }
+
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .activity-card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid #e0e0e0;
+    }
+
+    .activity-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border-color: #667eea;
+    }
+
+    .activity-icon {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .activity-text {
+      color: #333;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+
+    .tip-box {
+      background: #fff3cd;
+      border-left: 5px solid #ffc107;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+      color: #856404;
+    }
+
+    .mood-options {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .mood-btn {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      width: 0%;
+      animation: progress 2s ease-out forwards;
+    }
+
+    @keyframes progress {
+      to { width: 100%; }
+    }
+
+    .quote-box {
+      text-align: center;
+      font-style: italic;
+      color: #666;
+      margin: 20px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <div class="emoji-header">💙</div>
+    <h1>Seu Espaço de Bem-Estar</h1>
+    <p class="subtitle">Estamos aqui para te ouvir e te ajudar ✨</p>
+    
+    <button class="btn-primary" onclick="iniciarSentimentos()">
+      😊 Como está se sentindo hoje?
+    </button>
+    
+    <button class="btn-secondary" onclick="mostrarIdeias()">
+      💡 Ideias do que fazer hoje
+    </button>
+
+    <div class="quote-box">
+      "Cada dia é uma nova oportunidade para ser feliz"
+    </div>
+  </div>
+
+  <script>
+    const API_KEY = "AIzaSyCSKfiCUgcK8lbNtitro94wfV_OlGbl2Xk";
+    let historico = {
+      textoUsuario: '',
+      emocao: '',
+      interacoes: 0
+    };
+
+    const frases = [
+      "Acredite em você, você é incrível! 🌟",
+      "Pequenos passos levam a grandes conquistas 🚀",
+      "Você é mais forte do que imagina 💪",
+      "Hoje é um ótimo dia para ser feliz! ☀️"
+    ];
+
+    function trocarFrase() {
+      const frase = frases[Math.floor(Math.random() * frases.length)];
+      const quoteBox = document.querySelector('.quote-box');
+      if (quoteBox) {
+        quoteBox.style.opacity = '0';
+        setTimeout(() => {
+          quoteBox.textContent = `"${frase}"`;
+          quoteBox.style.opacity = '1';
+        }, 300);
+      }
+    }
+
+    setInterval(trocarFrase, 5000);
+
+    async function perguntarGemini(pergunta) {
+      try {
+        console.log('Enviando requisição para Gemini...');
+        
+        // CORREÇÃO AQUI: Use o modelo correto e endpoint atualizado
+        const resposta = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: pergunta }] }]
+            })
+          }
+        );
+
+        console.log('Status da resposta:', resposta.status);
+        
+        if (!resposta.ok) {
+          const errorData = await resposta.json();
+          console.error('Erro da API:', errorData);
+          
+          if (resposta.status === 400) {
+            return "⚠️ A API Key parece estar inválida ou mal configurada. Por favor, verifique sua chave do Gemini.";
+          } else if (resposta.status === 403) {
+            return "🔒 Acesso negado. Sua API Key pode não ter permissões ou está bloqueada. Verifique no Google AI Studio.";
+          } else if (resposta.status === 429) {
+            return "⏰ Você atingiu o limite de requisições. Por favor, aguarde alguns minutos e tente novamente.";
+          } else if (resposta.status === 404) {
+            return "🔍 Modelo não encontrado. Tentando alternativa...";
+          }
+          
+          return `❌ Erro ${resposta.status}: ${errorData.error?.message || 'Erro desconhecido'}. Verifique sua API Key.`;
+        }
+        
+        const data = await resposta.json();
+        console.log('Resposta recebida com sucesso!');
+        
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+          return data.candidates[0].content.parts[0].text;
+        } else {
+          console.error('Estrutura de resposta inesperada:', data);
+          return "⚠️ Recebi uma resposta inválida da API. Tente novamente.";
+        }
+        
+      } catch (error) {
+        console.error('Erro ao chamar Gemini:', error);
+        return "🌐 Erro de conexão. Verifique sua internet e se a API Key está correta. Detalhes: " + error.message;
+      }
+    }
+
+    // Função alternativa caso o modelo principal não funcione
+    async function perguntarGeminiAlternativo(pergunta) {
+      try {
+        console.log('Tentando modelo alternativo...');
+        
+        const resposta = await fetch(
+          `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: pergunta }] }]
+            })
+          }
+        );
+
+        if (!resposta.ok) {
+          throw new Error(`Erro ${resposta.status}`);
+        }
+        
+        const data = await resposta.json();
+        
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+          return data.candidates[0].content.parts[0].text;
+        } else {
+          // Fallback para respostas locais se a API falhar
+          return gerarRespostaLocal(pergunta);
+        }
+        
+      } catch (error) {
+        console.error('Erro no modelo alternativo:', error);
+        return gerarRespostaLocal(pergunta);
+      }
+    }
+
+    // Fallback local caso a API não funcione
+    function gerarRespostaLocal(pergunta) {
+      const respostasLocais = [
+        "Entendo como você se sente. Lembre-se que cada dia é uma nova oportunidade para recomeçar! 💙",
+        "Você é mais forte do que imagina. Continue seguindo em frente, um passo de cada vez! ✨",
+        "Os momentos difíceis não duram para sempre. Você tem a força necessária para superar isso! 🌟",
+        "Respire fundo e lembre-se: você já superou tantos desafios antes, e vai superar este também! 💪",
+        "A vida é como as estações - depois do inverno, sempre vem a primavera. Melhores dias virão! 🌸"
+      ];
+      
+      return respostasLocais[Math.floor(Math.random() * respostasLocais.length)];
+    }
+
+    function iniciarSentimentos() {
+      historico.interacoes++;
+      document.getElementById('app').innerHTML = `
+        <div class="emoji-header">💭</div>
+        <h1>Conte-nos sobre o seu dia</h1>
+        <p class="subtitle">Escreva livremente, estamos aqui para te ouvir</p>
+        
+        <div class="tip-box">
+          💡 <strong>Dica:</strong> Não tenha medo de se expressar. Quanto mais você compartilhar, melhor poderemos te ajudar!
+        </div>
+
+        <textarea id='texto' placeholder='O que aconteceu hoje? Como você se sente? Conte-nos...'></textarea>
+        
+        <button class="btn-success" onclick="validarTexto()">
+          ✨ Continuar
+        </button>
+        
+        <button class="btn-back" onclick="voltarInicio()">
+          ← Voltar
+        </button>
+      `;
+    }
+
+    function validarTexto() {
+      const texto = document.getElementById('texto').value.trim();
+      
+      if (texto.length < 10) {
+        alert('Por favor, escreva um pouco mais para que possamos te ajudar melhor! 😊');
+        return;
+      }
+
+      historico.textoUsuario = texto;
+      mostrarOpcoesSentimento();
+    }
+
+    function mostrarOpcoesSentimento() {
+      document.getElementById('app').innerHTML = `
+        <div class="emoji-header">🎯</div>
+        <h1>Como podemos te ajudar?</h1>
+        <p class="subtitle">Escolha a opção que mais combina com você agora</p>
+
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        
+        <button class="btn-primary mood-btn" onclick="processarEmocao('feliz')">
+          😊 Quero me sentir mais feliz
+        </button>
+        
+        <button class="btn-secondary mood-btn" onclick="processarEmocao('triste')">
+          😢 Preciso desabafar
+        </button>
+        
+        <button class="btn-warning mood-btn" onclick="processarEmocao('conselho')">
+          💡 Preciso de um conselho
+        </button>
+
+        <button class="btn-success mood-btn" onclick="processarEmocao('motivacao')">
+          🚀 Quero motivação
+        </button>
+        
+        <button class="btn-back" onclick="iniciarSentimentos()">
+          ← Voltar
+        </button>
+      `;
+    }
+
+    async function processarEmocao(tipo) {
+      historico.emocao = tipo;
+      
+      document.getElementById('app').innerHTML = `
+        <div class="loading">
+          <div class="emoji-header">🤔</div>
+          <h2>Preparando algo especial para você</h2>
+        </div>
+      `;
+
+      let prompt = '';
+      
+      if (tipo === 'feliz') {
+        prompt = `A pessoa disse: "${historico.textoUsuario}". 
+        Responda de forma calorosa e motivacional, contando uma história inspiradora curta, 
+        uma piada leve ou uma mensagem positiva que possa alegrar o dia dela. 
+        Mantenha o tom amigável e use emojis. Máximo 150 palavras.`;
+      } else if (tipo === 'triste') {
+        prompt = `A pessoa está passando por isso: "${historico.textoUsuario}". 
+        Responda com empatia profunda, validando os sentimentos dela. 
+        Seja um ouvinte compreensivo e ofereça conforto genuíno. 
+        Use um tom acolhedor e empático. Máximo 150 palavras.`;
+      } else if (tipo === 'conselho') {
+        prompt = `A pessoa compartilhou: "${historico.textoUsuario}". 
+        Dê um conselho prático, sábio e encorajador baseado na situação. 
+        Seja específico e ofereça passos práticos que ela possa seguir. 
+        Mantenha o tom amigável e motivador. Máximo 150 palavras.`;
+      } else if (tipo === 'motivacao') {
+        prompt = `A pessoa disse: "${historico.textoUsuario}". 
+        Crie uma mensagem super motivacional e energizante! 
+        Faça ela sentir que pode conquistar qualquer coisa. 
+        Use exemplos de superação e seja muito positivo. Máximo 150 palavras.`;
+      }
+
+      // Tenta a API principal primeiro, depois a alternativa, depois fallback local
+      let resposta = await perguntarGemini(prompt);
+      
+      // Se a resposta principal falhar, tenta alternativa
+      if (resposta.includes("Erro") || resposta.includes("não encontrado") || resposta.includes("⚠️")) {
+        resposta = await perguntarGeminiAlternativo(prompt);
+      }
+      
+      mostrarResposta(resposta, tipo);
+    }
+
+    function mostrarResposta(resposta, tipo) {
+      let emoji = tipo === 'feliz' ? '😊' : tipo === 'triste' ? '💙' : tipo === 'motivacao' ? '🚀' : '💡';
+      
+      document.getElementById('app').innerHTML = `
+        <div class="emoji-header">${emoji}</div>
+        <h1>Mensagem para você</h1>
+        
+        <div class="response-box">
+          ${resposta}
+        </div>
+
+        <div class="tip-box">
+          💙 Lembre-se: Você não está sozinho(a). Sempre há alguém disposto a te ouvir e te ajudar!
+        </div>
+        
+        <button class="btn-success" onclick="compartilharFeedback()">
+          ⭐ Isso me ajudou!
+        </button>
+
+        <button class="btn-primary" onclick="mostrarOpcoesSentimento()">
+          🔄 Tentar outra opção
+        </button>
+        
+        <button class="btn-back" onclick="voltarInicio()">
+          ← Voltar ao início
+        </button>
+      `;
+    }
+
+    function compartilharFeedback() {
+      document.getElementById('app').innerHTML = `
+        <div class="emoji-header">🎉</div>
+        <h1>Que ótimo saber disso!</h1>
+        
+        <div class="response-box">
+          Ficamos muito felizes em ter ajudado! Você é incrível e merece toda a felicidade do mundo. 
+          Continue sempre acreditando em você! 💙✨
+        </div>
+
+        <div class="quote-box">
+          "A felicidade está nas pequenas coisas, e você acabou de criar um momento feliz!" 🌟
+        </div>
+        
+        <button class="btn-primary" onclick="voltarInicio()">
+          🏠 Voltar ao início
+        </button>
+      `;
+    }
+
+    function mostrarIdeias() {
+      historico.interacoes++;
+      document.getElementById('app').innerHTML = `
+        <div class="emoji-header">🎨</div>
+        <h1>O que você gostaria de fazer?</h1>
+        <p class="subtitle">Escolha uma atividade para o seu bem-estar</p>
+
+        <div class="activity-grid">
+          <div class="activity-card" onclick="sugerirAtividade('relaxar')">
+            <div class="activity-icon">🧘</div>
+            <div class="activity-text">Relaxar</div>
+          </div>
+
+          <div class="activity-card" onclick="sugerirAtividade('divertir')">
+            <div class="activity-icon">🎮</div>
+            <div class="activity-text">Me divertir</div>
+          </div>
+
+          <div class="activity-card" onclick="sugerirAtividade('aprender')">
+            <div class="activity-icon">📚</div>
+            <div class="activity-text">Aprender algo</div>
+          </div>
+
+          <div class="activity-card" onclick="sugerirAtividade('social')">
+            <div class="activity-icon">💬</div>
+            <div class="activity-text">Socializar</div>
+          </div>
+
+          <div class="activity-card" onclick="sugerirAtividade('exercicio')">
+            <div class="activity-icon">🏃</div>
+            <div class="activity-text">Me exercitar</div>
+          </div>
+
+          <div class="activity-card" onclick="sugerirAtividade('criativo')">
+            <div class="activity-icon">🎨</div>
+            <div class="activity-text">Ser criativo</div>
+          </div>
+        </div>
+        
+        <button class="btn-back" onclick="voltarInicio()">
+          ← Voltar
+        </button>
+      `;
+    }
+
+    async function sugerirAtividade(tipo) {
+      document.getElementById('app').innerHTML = `
+        <div class="loading">
+          <div class="emoji-header">✨</div>
+          <h2>Criando sugestões personalizadas para você</h2>
+        </div>
+      `;
+
+      let prompt = '';
+      
+      if (tipo === 'relaxar') {
+        prompt = `Sugira 5 atividades relaxantes e detalhadas que uma pessoa pode fazer hoje. 
+        Inclua opções como meditação, leitura, música, etc. 
+        Seja específico e criativo. Use emojis e formatação clara.`;
+      } else if (tipo === 'divertir') {
+        prompt = `Sugira 5 atividades divertidas e envolventes para fazer hoje. 
+        Pode incluir jogos, filmes, hobbies, etc. 
+        Seja entusiasmado e criativo. Use emojis.`;
+      } else if (tipo === 'aprender') {
+        prompt = `Sugira 5 formas interessantes de aprender algo novo hoje. 
+        Pode incluir cursos online, documentários, livros, podcasts, etc. 
+        Seja inspirador. Use emojis.`;
+      } else if (tipo === 'social') {
+        prompt = `Sugira 5 formas de socializar e conectar com outras pessoas hoje. 
+        Pode incluir atividades presenciais e online. 
+        Seja acolhedor e inclusivo. Use emojis.`;
+      } else if (tipo === 'exercicio') {
+        prompt = `Sugira 5 atividades físicas que alguém pode fazer hoje. 
+        Inclua opções para diferentes níveis de energia. 
+        Seja motivador e prático. Use emojis.`;
+      } else if (tipo === 'criativo') {
+        prompt = `Sugira 5 atividades criativas que alguém pode fazer hoje. 
+        Pode incluir arte, escrita, música, culinária, etc. 
+        Seja inspirador e imaginativo. Use emojis.`;
+      }
+
+      let resposta = await perguntarGemini(prompt);
+      
+      // Se a resposta principal falhar, tenta alternativa
+      if (resposta.includes("Erro") || resposta.includes("não encontrado") || resposta.includes("⚠️")) {
+        resposta = await perguntarGeminiAlternativo(prompt);
+      }
+      
+      document.getElementById('app').innerHTML = `
+        <div class="emoji-header">🎯</div>
+        <h1>Sugestões para você</h1>
+        
+        <div class="response-box">
+          ${resposta}
+        </div>
+
+        <div class="tip-box">
+          💡 <strong>Dica:</strong> Não precisa fazer tudo de uma vez! Escolha o que mais te atrai agora e divirta-se! 😊
+        </div>
+        
+        <button class="btn-primary" onclick="mostrarIdeias()">
+          🔄 Ver outras categorias
+        </button>
+        
+        <button class="btn-back" onclick="voltarInicio()">
+          ← Voltar ao início
+        </button>
+      `;
+    }
+
+    function voltarInicio() {
+      document.getElementById('app').innerHTML = `
+        <div class="emoji-header">💙</div>
+        <h1>Seu Espaço de Bem-Estar</h1>
+        <p class="subtitle">Estamos aqui para te ouvir e te ajudar ✨</p>
+        
+        <button class="btn-primary" onclick="iniciarSentimentos()">
+          😊 Como está se sentindo hoje?
+        </button>
+        
+        <button class="btn-secondary" onclick="mostrarIdeias()">
+          💡 Ideias do que fazer hoje
+        </button>
+
+        <div class="quote-box">
+          "Cada dia é uma nova oportunidade para ser feliz"
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
