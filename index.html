@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seu Espaço de Bem-Estar 💙</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#667eea">
+  <meta name="description" content="Seu espaço pessoal para bem-estar emocional e mental">
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Espa%C3%A7o%20de%20Bem-Estar%22%2C%22short_name%22%3A%22Bem-Estar%22%2C%22description%22%3A%22Seu%20espa%C3%A7o%20pessoal%20para%20bem-estar%20emocional%20e%20mental%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23667eea%22%2C%22theme_color%22%3A%22%23667eea%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20100%20100'%3E%3Ctext%20y%3D'.9em'%20font-size%3D'90'%3E%F0%9F%92%99%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%2C%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20100%20100'%3E%3Ctext%20y%3D'.9em'%20font-size%3D'90'%3E%F0%9F%92%99%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💙</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💙</text></svg>">
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -284,9 +292,105 @@
       background: #f8f9fa;
       border-radius: 15px;
     }
+
+    /* PWA Install Prompt */
+    .install-prompt {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: none;
+      animation: slideUp 0.5s ease-out;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    .install-btn {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 5px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .install-cancel {
+      background: #e0e0e0;
+      color: #333;
+    }
+
+    /* Offline Indicator */
+    .offline-indicator {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #f5576c;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 0.8em;
+      display: none;
+      z-index: 1000;
+    }
+
+    /* PWA Badge */
+    .pwa-badge {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: #667eea;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.7em;
+      z-index: 999;
+      display: none;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 1001;
+      animation: fadeInOut 3s ease-in-out;
+      display: none;
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
   </style>
 </head>
 <body>
+  <!-- PWA Elements -->
+  <div class="pwa-badge" id="pwaBadge">PWA 💙</div>
+  <div class="offline-indicator" id="offlineIndicator">🔴 Offline</div>
+  <div class="install-prompt" id="installPrompt">
+    <p>📱 Instalar App de Bem-Estar?</p>
+    <button class="install-btn" onclick="installApp()">Instalar</button>
+    <button class="install-btn install-cancel" onclick="dismissInstall()">Agora não</button>
+  </div>
+  <div class="toast" id="toast"></div>
+
   <div class="container" id="app">
     <div class="emoji-header">💙</div>
     <h1>Seu Espaço de Bem-Estar</h1>
@@ -303,9 +407,15 @@
     <div class="quote-box">
       "Cada dia é uma nova oportunidade para ser feliz"
     </div>
+
+    <!-- PWA Status -->
+    <div style="text-align: center; margin-top: 20px; font-size: 0.8em; color: #666;">
+      <span id="pwaStatus">📱 App Pronto para Instalar</span>
+    </div>
   </div>
 
   <script>
+    // ========== CONFIGURAÇÕES ==========
     const API_KEY = "AIzaSyCSKfiCUgcK8lbNtitro94wfV_OlGbl2Xk";
     let historico = {
       textoUsuario: '',
@@ -313,11 +423,153 @@
       interacoes: 0
     };
 
+    // ========== PWA FUNCTIONALITY ==========
+    let deferredPrompt;
+
+    // Service Worker Registration
+    function registerServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        const swCode = `
+          const CACHE_NAME = 'bem-estar-v2';
+          const urlsToCache = [
+            '/',
+            './index.html'
+          ];
+
+          self.addEventListener('install', (event) => {
+            console.log('Service Worker instalando...');
+            event.waitUntil(
+              caches.open(CACHE_NAME)
+                .then((cache) => {
+                  return cache.addAll(urlsToCache);
+                })
+            );
+          });
+
+          self.addEventListener('fetch', (event) => {
+            event.respondWith(
+              caches.match(event.request)
+                .then((response) => {
+                  if (response) {
+                    return response;
+                  }
+                  return fetch(event.request);
+                })
+            );
+          });
+
+          self.addEventListener('activate', (event) => {
+            event.waitUntil(
+              caches.keys().then((cacheNames) => {
+                return Promise.all(
+                  cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME) {
+                      return caches.delete(cacheName);
+                    }
+                  })
+                );
+              })
+            );
+          });
+        `;
+
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        
+        navigator.serviceWorker.register(swUrl)
+          .then((registration) => {
+            console.log('Service Worker registrado com sucesso:', registration);
+          })
+          .catch((error) => {
+            console.log('Falha no registro do Service Worker:', error);
+          });
+      }
+    }
+
+    // Listen for app installation prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstallPrompt();
+      updatePWAStatus('📱 App Disponível para Instalação');
+    });
+
+    // App installed
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      hideInstallPrompt();
+      updatePWAStatus('✅ App Instalado');
+      document.getElementById('pwaBadge').style.display = 'block';
+      showToast('🎉 App instalado com sucesso!');
+    });
+
+    // Online/Offline detection
+    window.addEventListener('online', () => {
+      document.getElementById('offlineIndicator').style.display = 'none';
+      showToast('✅ Conectado à internet');
+    });
+
+    window.addEventListener('offline', () => {
+      document.getElementById('offlineIndicator').style.display = 'block';
+      showToast('🔴 Modo offline ativado');
+    });
+
+    // PWA Functions
+    function showInstallPrompt() {
+      // Só mostra se o usuário não dispensou antes
+      if (!localStorage.getItem('installDismissed')) {
+        const installPrompt = document.getElementById('installPrompt');
+        installPrompt.style.display = 'block';
+      }
+    }
+
+    function hideInstallPrompt() {
+      const installPrompt = document.getElementById('installPrompt');
+      installPrompt.style.display = 'none';
+    }
+
+    function dismissInstall() {
+      hideInstallPrompt();
+      localStorage.setItem('installDismissed', 'true');
+    }
+
+    async function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          console.log('Usuário aceitou a instalação');
+        }
+        deferredPrompt = null;
+        hideInstallPrompt();
+      }
+    }
+
+    function updatePWAStatus(message) {
+      const statusElement = document.getElementById('pwaStatus');
+      if (statusElement) {
+        statusElement.textContent = message;
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.display = 'block';
+      
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+
+    // ========== APP FUNCTIONALITY ==========
     const frases = [
       "Acredite em você, você é incrível! 🌟",
       "Pequenos passos levam a grandes conquistas 🚀",
       "Você é mais forte do que imagina 💪",
-      "Hoje é um ótimo dia para ser feliz! ☀️"
+      "Hoje é um ótimo dia para ser feliz! ☀️",
+      "Cada respiração é uma nova chance 🌈",
+      "Você merece toda a felicidade do mundo 💖"
     ];
 
     function trocarFrase() {
@@ -335,10 +587,14 @@
     setInterval(trocarFrase, 5000);
 
     async function perguntarGemini(pergunta) {
+      // Verificar se está offline
+      if (!navigator.onLine) {
+        return "📶 Você está offline no momento. Aqui está uma mensagem especial para você: " + gerarRespostaLocal(pergunta);
+      }
+
       try {
         console.log('Enviando requisição para Gemini...');
         
-        // CORREÇÃO AQUI: Use o modelo correto e endpoint atualizado
         const resposta = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
           {
@@ -357,16 +613,16 @@
           console.error('Erro da API:', errorData);
           
           if (resposta.status === 400) {
-            return "⚠️ A API Key parece estar inválida ou mal configurada. Por favor, verifique sua chave do Gemini.";
+            return "⚠️ Problema de configuração. Usando modo offline... " + gerarRespostaLocal(pergunta);
           } else if (resposta.status === 403) {
-            return "🔒 Acesso negado. Sua API Key pode não ter permissões ou está bloqueada. Verifique no Google AI Studio.";
+            return "🔒 Acesso negado. Usando modo offline... " + gerarRespostaLocal(pergunta);
           } else if (resposta.status === 429) {
-            return "⏰ Você atingiu o limite de requisições. Por favor, aguarde alguns minutos e tente novamente.";
+            return "⏰ Muitas requisições. Usando modo offline... " + gerarRespostaLocal(pergunta);
           } else if (resposta.status === 404) {
             return "🔍 Modelo não encontrado. Tentando alternativa...";
           }
           
-          return `❌ Erro ${resposta.status}: ${errorData.error?.message || 'Erro desconhecido'}. Verifique sua API Key.`;
+          return "❌ Erro na API. " + gerarRespostaLocal(pergunta);
         }
         
         const data = await resposta.json();
@@ -376,12 +632,12 @@
           return data.candidates[0].content.parts[0].text;
         } else {
           console.error('Estrutura de resposta inesperada:', data);
-          return "⚠️ Recebi uma resposta inválida da API. Tente novamente.";
+          return "⚠️ Recebi uma resposta inválida. " + gerarRespostaLocal(pergunta);
         }
         
       } catch (error) {
         console.error('Erro ao chamar Gemini:', error);
-        return "🌐 Erro de conexão. Verifique sua internet e se a API Key está correta. Detalhes: " + error.message;
+        return "🌐 Erro de conexão. " + gerarRespostaLocal(pergunta);
       }
     }
 
@@ -410,7 +666,6 @@
         if (data.candidates && data.candidates[0] && data.candidates[0].content) {
           return data.candidates[0].content.parts[0].text;
         } else {
-          // Fallback para respostas locais se a API falhar
           return gerarRespostaLocal(pergunta);
         }
         
@@ -427,7 +682,12 @@
         "Você é mais forte do que imagina. Continue seguindo em frente, um passo de cada vez! ✨",
         "Os momentos difíceis não duram para sempre. Você tem a força necessária para superar isso! 🌟",
         "Respire fundo e lembre-se: você já superou tantos desafios antes, e vai superar este também! 💪",
-        "A vida é como as estações - depois do inverno, sempre vem a primavera. Melhores dias virão! 🌸"
+        "A vida é como as estações - depois do inverno, sempre vem a primavera. Melhores dias virão! 🌸",
+        "Você é capaz de coisas incríveis! Acredite no seu potencial e continue seguindo seus sonhos! 🚀",
+        "Às vezes, tudo o que precisamos é de um momento para respirar e recarregar as energias. Você consegue! 🌈",
+        "Seu bem-estar é importante. Cuide de você com carinho e paciência hoje! 💖",
+        "As nuvens mais escuras sempre passam. O sol vai brilhar para você novamente! ☀️",
+        "Você não está sozinho(a). Muitas pessoas se importam com você e torcem pela sua felicidade! 🤗"
       ];
       
       return respostasLocais[Math.floor(Math.random() * respostasLocais.length)];
@@ -534,10 +794,8 @@
         Use exemplos de superação e seja muito positivo. Máximo 150 palavras.`;
       }
 
-      // Tenta a API principal primeiro, depois a alternativa, depois fallback local
       let resposta = await perguntarGemini(prompt);
       
-      // Se a resposta principal falhar, tenta alternativa
       if (resposta.includes("Erro") || resposta.includes("não encontrado") || resposta.includes("⚠️")) {
         resposta = await perguntarGeminiAlternativo(prompt);
       }
@@ -677,7 +935,6 @@
 
       let resposta = await perguntarGemini(prompt);
       
-      // Se a resposta principal falhar, tenta alternativa
       if (resposta.includes("Erro") || resposta.includes("não encontrado") || resposta.includes("⚠️")) {
         resposta = await perguntarGeminiAlternativo(prompt);
       }
@@ -721,8 +978,32 @@
         <div class="quote-box">
           "Cada dia é uma nova oportunidade para ser feliz"
         </div>
+
+        <div style="text-align: center; margin-top: 20px; font-size: 0.8em; color: #666;">
+          <span id="pwaStatus">📱 App Pronto para Instalar</span>
+        </div>
       `;
     }
+
+    // ========== INICIALIZAÇÃO ==========
+    window.addEventListener('load', () => {
+      // Registrar Service Worker
+      registerServiceWorker();
+      
+      // Verificar se o app já está instalado
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        updatePWAStatus('✅ App Instalado');
+        document.getElementById('pwaBadge').style.display = 'block';
+      }
+
+      // Verificar estado da conexão
+      if (!navigator.onLine) {
+        document.getElementById('offlineIndicator').style.display = 'block';
+      }
+
+      // Iniciar troca de frases
+      trocarFrase();
+    });
   </script>
 </body>
 </html>
